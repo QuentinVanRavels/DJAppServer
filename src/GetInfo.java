@@ -16,26 +16,20 @@ public class GetInfo {
     @GET
     @Produces("application/json")
     public String getSong() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/test?useSSL=false";
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Connection conn = DriverManager.getConnection(url, "root", "root");
 
         Statement stmt = null;
-        String query = "select title, artist from test.songs";
+        String json = null;
 
         try {
+            Class.forName("com.mysql.jdbc.Driver");
+
+            String url = "jdbc:mysql://localhost:3306?useSSL=false";
+            Connection conn = DriverManager.getConnection(url, "root", "root");
+
+            String query = "select title, artist from test.songs";
+
             stmt = conn.createStatement();
-            String json = null;
+
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 String title = rs.getString("title");
@@ -44,8 +38,6 @@ public class GetInfo {
                 json = json + "title: " + title + ", artist" + artist;
             }
 
-            return json;
-
         } catch (SQLException e) {
             System.out.print(e);
         } finally {
@@ -53,6 +45,9 @@ public class GetInfo {
                 stmt.close();
             }
 
+            if(json != null){
+                return json;
+            }
 
             return "Error";
             // String json = "{ \"Title\":\"Knights of Cydonia\", \"Artist\":\"Muse\"}";
