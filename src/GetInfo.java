@@ -18,7 +18,7 @@ public class GetInfo {
     public String getSong() throws SQLException {
 
         Statement stmt = null;
-        String json = null;
+        String json = "{\"songs\":[";
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -35,8 +35,10 @@ public class GetInfo {
                 String title = rs.getString("title");
                 String artist = rs.getString("artist");
                 System.out.println("title: " + title + ", artist: " + artist);
-                json = json + "title: " + title + ", artist" + artist;
+                json = json + "{ \"title\":\"" + title + "\", \"artist\":\"" + artist + "\" }";
             }
+
+            json = json + "]}";
 
         } catch (SQLException e) {
             System.out.print(e);
@@ -45,7 +47,7 @@ public class GetInfo {
                 stmt.close();
             }
 
-            if(json != null){
+            if(json != "{\"songs\":["){
                 return json;
             }
 
