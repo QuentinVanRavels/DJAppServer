@@ -23,9 +23,9 @@ public class PlaySong {
 
             // String url = "jdbc:mysql://localhost:3306?useSSL=false";
             String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
-            Connection conn = DriverManager.getConnection(url, "root", "root");
+            Connection conn = DriverManager.getConnection(url, "Dries", "password");
 
-            String query = "select artist, song from test.songs where id = " + c;
+            String query = "select artist, song from sqldb.Track where id = " + c;
 
             stmt = conn.createStatement();
 
