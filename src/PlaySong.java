@@ -27,8 +27,8 @@ public class PlaySong {
             ResultSet rs = stmt.executeQuery(query);
 
             MqttJavaApplication app = new MqttJavaApplication();
-           // app.sendMessage(c,rs.getString("song"),rs.getString("artist"),rs.getString("album"),rs.getInt("year"));
-            app.sendMessage(c,rs.getString("song"),rs.getString("artist"),"album",1995);
+            app.sendMessage(c,rs.getString("song"),rs.getString("artist"),rs.getString("album"),rs.getInt("year"));
+
 
         } catch (SQLException e) {
             System.out.print(e);
