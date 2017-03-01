@@ -2,12 +2,15 @@
  * Created by Quentin Van Ravels on 01-Mar-17.
  */
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import javax.ws.rs.*;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.*;
 
+@CrossOrigin
 @Path("/play")
 public class PlaySong {
 

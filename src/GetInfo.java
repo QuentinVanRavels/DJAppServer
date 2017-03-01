@@ -2,9 +2,9 @@
  * Created by Quentin Van Ravels on 28-Feb-17.
  */
 
-//import com.mongodb.*;
 
 import com.mongodb.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
 import java.sql.*;
 import java.util.Iterator;
 
-
+@CrossOrigin
 @Path("/info")
 public class GetInfo {
 
@@ -65,11 +65,58 @@ public class GetInfo {
         }
     }
 
+    @Path("/stats")
+    @GET
+    @Produces("application/json")
+    public String getStats() throws SQLException {
 
+        Statement stmt = null;
+        String json = "[";
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+
+            // String url = "jdbc:mysql://localhost:3306?useSSL=false";
+            String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
+            Connection conn = DriverManager.getConnection(url, "Dries", "password");
+
+            String query = "select id_track, likes, dislikes, time from sqldb.Play";
+
+            stmt = conn.createStatement();
+
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                int id_track = rs.getInt("id_track");
+                double likes = rs.getDouble("likes");
+                double dislikes = rs.getDouble("dislikes");
+                Timestamp time = rs.getTimestamp("time");
+                json = json + "{ \"id_track\": " + id_track + ", \"likes\": " + likes + ", \"dislikes\": " + dislikes + ", \"time\": \"" + time + "\"},";
+            }
+
+            json = json.substring(0,json.length()-1) + "]";
+
+        } catch (SQLException e) {
+            System.out.print(e);
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+
+            if(json != "["){
+                return json;
+            }
+
+            return "Error";
+            // String json = "{ \"Title\":\"Knights of Cydonia\", \"Artist\":\"Muse\"}";
+            // return json;
+        }
+    }
+
+/*
     @Path("/stats/{c}")
     @GET
     @Produces("application/json")
-    public String getStat(@PathParam("c") int c) throws SQLException, UnknownHostException {
+    public String getStatSong(@PathParam("c") int c) throws SQLException, UnknownHostException {
 
         String json = "[";
 
@@ -93,7 +140,7 @@ public class GetInfo {
         return "Error";
 
     }
-
+*/
     @Path("{c}")
     @GET
     @Produces("application/json")
@@ -111,7 +158,7 @@ public class GetInfo {
     @Produces("application/json")
     public String getYolo(){
 
-        return "[{ \"id\": 1, \"artist\": \"Red Hot Chilli Peppers\", \"song\": \"Californication\", \"year\": \"1999\"},{ \"id\": 2, \"artist\": \"Queen \", \"song\": \"Bohemian Rhapsody\", \"year\": \"1975\"},{ \"id\": 3, \"artist\": \"Nirvana\", \"song\": \"Smells like teen spirit\", \"year\": \"1991\"},{ \"id\": 4, \"artist\": \"Oasis\", \"song\": \"Wonderwall\", \"year\": \"1995\"},{ \"id\": 5, \"artist\": \"The Rolling Stones\", \"song\": \"You can't always get what you want\", \"year\": \"1969\"},{ \"id\": 6, \"artist\": \"Green Day\", \"song\": \"American Idiot\", \"year\": \"2004\"}]";
+        return "{ \"id\": 1, \"artist\": \"Red Hot Chilli Peppers\", \"song\": \"Californication\", \"year\": \"1999\"},{ \"id\": 2, \"artist\": \"Queen \", \"song\": \"Bohemian Rhapsody\", \"year\": \"1975\"},{ \"id\": 3, \"artist\": \"Nirvana\", \"song\": \"Smells like teen spirit\", \"year\": \"1991\"},{ \"id\": 4, \"artist\": \"Oasis\", \"song\": \"Wonderwall\", \"year\": \"1995\"},{ \"id\": 5, \"artist\": \"The Rolling Stones\", \"song\": \"You can't always get what you want\", \"year\": \"1969\"},{ \"id\": 6, \"artist\": \"Green Day\", \"song\": \"American Idiot\", \"year\": \"2004\"}";
     }
 
 }
