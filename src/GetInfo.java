@@ -112,7 +112,7 @@ public class GetInfo {
         }
     }
 
-/*
+
     @Path("/stats/{c}")
     @GET
     @Produces("application/json")
@@ -140,7 +140,7 @@ public class GetInfo {
         return "Error";
 
     }
-*/
+
     @Path("{c}")
     @GET
     @Produces("application/json")
@@ -158,7 +158,7 @@ public class GetInfo {
     @Produces("application/json")
     public String getYolo(){
 
-        return "{ \"id\": 1, \"artist\": \"Red Hot Chilli Peppers\", \"song\": \"Californication\", \"year\": \"1999\"},{ \"id\": 2, \"artist\": \"Queen \", \"song\": \"Bohemian Rhapsody\", \"year\": \"1975\"},{ \"id\": 3, \"artist\": \"Nirvana\", \"song\": \"Smells like teen spirit\", \"year\": \"1991\"},{ \"id\": 4, \"artist\": \"Oasis\", \"song\": \"Wonderwall\", \"year\": \"1995\"},{ \"id\": 5, \"artist\": \"The Rolling Stones\", \"song\": \"You can't always get what you want\", \"year\": \"1969\"},{ \"id\": 6, \"artist\": \"Green Day\", \"song\": \"American Idiot\", \"year\": \"2004\"}";
+        return "[{ \"id\": 1, \"artist\": \"Red Hot Chilli Peppers\", \"song\": \"Californication\", \"year\": \"1999\"},{ \"id\": 2, \"artist\": \"Queen \", \"song\": \"Bohemian Rhapsody\", \"year\": \"1975\"},{ \"id\": 3, \"artist\": \"Nirvana\", \"song\": \"Smells like teen spirit\", \"year\": \"1991\"},{ \"id\": 4, \"artist\": \"Oasis\", \"song\": \"Wonderwall\", \"year\": \"1995\"},{ \"id\": 5, \"artist\": \"The Rolling Stones\", \"song\": \"You can't always get what you want\", \"year\": \"1969\"},{ \"id\": 6, \"artist\": \"Green Day\", \"song\": \"American Idiot\", \"year\": \"2004\"}]";
     }
 
 }
