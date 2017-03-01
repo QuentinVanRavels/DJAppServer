@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.eclipse.paho:org.eclipse.paho.client.mqttv3.MqttMessage:unknown">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/paho/org.eclipse.paho.client.mqttv3.MqttMessage/unknown/org.eclipse.paho.client.mqttv3.MqttMessage-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/paho/org.eclipse.paho.client.mqttv3.MqttMessage/unknown/org.eclipse.paho.client.mqttv3.MqttMessage-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/paho/org.eclipse.paho.client.mqttv3.MqttMessage/unknown/org.eclipse.paho.client.mqttv3.MqttMessage-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

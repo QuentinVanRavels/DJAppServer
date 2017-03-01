@@ -16,13 +16,14 @@ import org.springframework.messaging.MessageChannel;
 @IntegrationComponentScan
 public class MqttJavaApplication {
 
-   public static void main(String[] args) {
+   public static void main(String title, String artist, String[] args) {
         ConfigurableApplicationContext context =
                 new SpringApplicationBuilder(MqttJavaApplication.class)
                         .web(false)
                         .run(args);
         MyGateway gateway = context.getBean(MyGateway.class);
-        gateway.sendToMqtt("00#%Title#%Artist#%Album#%Year");
+        gateway.sendToMqtt("00#%" + title + "#%" + artist + "#%Album#%Year");
+
     }
 
     @Bean

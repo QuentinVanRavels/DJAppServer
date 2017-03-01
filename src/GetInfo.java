@@ -23,8 +23,8 @@ public class GetInfo {
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
-           // String url = "jdbc:mysql://localhost:3306?useSSL=false";
-            String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
+            String url = "jdbc:mysql://localhost:3306?useSSL=false";
+           // String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
             Connection conn = DriverManager.getConnection(url, "root", "root");
 
             String query = "select id, artist, song from test.songs";
@@ -36,7 +36,7 @@ public class GetInfo {
                 int id = rs.getInt("id");
                 String artist = rs.getString("artist");
                 String song = rs.getString("song");
-                json = json + "{ \"id\":\"" + id + "\", \"artist\":\"" + artist + "\", \"song\":\"" + song + "\"}";
+                json = json + "{ \"id\": " + id + ", \"artist\": \"" + artist + "\", \"song\": \"" + song + "\"}";
             }
 
             json = json + "]}";
