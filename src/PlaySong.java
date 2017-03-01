@@ -2,7 +2,12 @@
  * Created by Quentin Van Ravels on 01-Mar-17.
  */
 
+import Mqtt.MqttJavaApplication;
+
 import javax.ws.rs.*;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.*;
 
 @Path("/play")
@@ -10,7 +15,7 @@ public class PlaySong {
 
     @Path("{c}")
     @GET
-    public String getInput(@PathParam("c") int c) throws SQLException {
+    public String getInput(@PathParam("c") int c) throws SQLException,IOException {
         Statement stmt = null;
 
         try {
@@ -27,7 +32,12 @@ public class PlaySong {
             ResultSet rs = stmt.executeQuery(query);
 
             MqttJavaApplication app = new MqttJavaApplication();
-            app.sendMessage(c,rs.getString("song"),rs.getString("artist"),rs.getString("album"),rs.getInt("year"));
+            Socket socket = new Socket("localhost",6789);
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            String songData = String.valueOf(c)+"#%"+rs.getString("title")+"#%"+rs.getString("artist")+"#%"+rs.getString("album")+"#%"+String.valueOf(rs.getInt("year"));
+            socket.close();
+            dataOutputStream.writeBytes(songData + '\n');
+            //app.sendMessage(c,rs.getString("song"),rs.getString("artist"),rs.getString("album"),rs.getInt("year"));
 
 
         } catch (SQLException e) {
