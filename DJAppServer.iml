@@ -24,6 +24,7 @@
     <orderEntry type="library" name="Jersey-2.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.1" level="application_server_libraries" />
     <orderEntry type="library" name="mysql-connector-java-5.1.41-bin" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.10.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: mysql:mysql-connector-java:5.1.40" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.microsoft.sqlserver:mssql-jdbc:6.1.0.jre7" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.microsoft.azure:azure-keyvault:0.9.3" level="project" />

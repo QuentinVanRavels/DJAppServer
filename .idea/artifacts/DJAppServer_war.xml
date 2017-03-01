@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="DJAppServer:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/DJAppServer_war</output-path>
+    <root id="archive" name="DJAppServer_war.war">
+      <element id="artifact" artifact-name="DJAppServer:war exploded" />
+    </root>
+  </artifact>
+</component>

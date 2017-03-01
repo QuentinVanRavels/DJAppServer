@@ -16,8 +16,8 @@ public class PlaySong {
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
-             String url = "jdbc:mysql://localhost:3306?useSSL=false";
-            //String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
+            // String url = "jdbc:mysql://localhost:3306?useSSL=false";
+            String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
             Connection conn = DriverManager.getConnection(url, "root", "root");
 
             String query = "select artist, song from test.songs where id = " + c;
