@@ -17,6 +17,7 @@ public class MyApplication extends Application{
         h.add( HelloWorld.class );
         h.add( GetInfo.class);
         h.add( PlaySong.class);
+      //  h.add(MqttJavaApplication.class);
         return h;
     }
 }

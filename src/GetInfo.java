@@ -27,7 +27,7 @@ public class GetInfo {
            // String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
             Connection conn = DriverManager.getConnection(url, "root", "root");
 
-            String query = "select id, artist, song from test.songs";
+            String query = "select id, artist, song, album, year from test.songs";
 
             stmt = conn.createStatement();
 
@@ -36,10 +36,12 @@ public class GetInfo {
                 int id = rs.getInt("id");
                 String artist = rs.getString("artist");
                 String song = rs.getString("song");
-                json = json + "{ \"id\": " + id + ", \"artist\": \"" + artist + "\", \"song\": \"" + song + "\"}";
+                String album = rs.getString("album");
+                int year = rs.getInt("year");
+                json = json + "{ \"id\": " + id + ", \"artist\": \"" + artist + "\", \"song\": \"" + song + "\", \"album\": \"" + album + "\", \"year\": \"" + year + "\"},";
             }
 
-            json = json + "]}";
+            json = json.substring(0,json.length()-1) + "]}";
 
         } catch (SQLException e) {
             System.out.print(e);

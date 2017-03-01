@@ -9,8 +9,8 @@ import java.sql.*;
 public class PlaySong {
 
     @Path("{c}")
-    @POST
-    public void getInput(@PathParam("c") int c) throws SQLException {
+    @GET
+    public String getInput(@PathParam("c") int c) throws SQLException {
         Statement stmt = null;
 
         try {
@@ -27,7 +27,8 @@ public class PlaySong {
             ResultSet rs = stmt.executeQuery(query);
 
             MqttJavaApplication app = new MqttJavaApplication();
-            app.sendMessage(rs.getInt("id"),rs.getString("song"),rs.getString("artist"),rs.getString("album"),rs.getInt("year"));
+           // app.sendMessage(c,rs.getString("song"),rs.getString("artist"),rs.getString("album"),rs.getInt("year"));
+            app.sendMessage(c,rs.getString("song"),rs.getString("artist"),"album",1995);
 
         } catch (SQLException e) {
             System.out.print(e);
@@ -38,5 +39,7 @@ public class PlaySong {
                 stmt.close();
             }
         }
+
+        return "Have a nice day!";
     }
 }
