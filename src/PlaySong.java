@@ -2,8 +2,6 @@
  * Created by Quentin Van Ravels on 01-Mar-17.
  */
 
-import Mqtt.MqttJavaApplication;
-
 import javax.ws.rs.*;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -31,7 +29,6 @@ public class PlaySong {
 
             ResultSet rs = stmt.executeQuery(query);
 
-            MqttJavaApplication app = new MqttJavaApplication();
             Socket socket = new Socket("localhost",6789);
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             String songData = String.valueOf(c)+"#%"+rs.getString("title")+"#%"+rs.getString("artist")+"#%"+rs.getString("album")+"#%"+String.valueOf(rs.getInt("year"));
