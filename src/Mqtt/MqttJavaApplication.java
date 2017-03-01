@@ -1,9 +1,9 @@
-import com.sun.org.apache.xalan.internal.xsltc.runtime.MessageHandler;
+package Mqtt;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
@@ -13,16 +13,13 @@ import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.messaging.MessageChannel;
 
 @SpringBootApplication
-@IntegrationComponentScan
 public class MqttJavaApplication {
 
-   public void sendMessage(Integer id,String title, String artist,String album,Integer year) {
-        ConfigurableApplicationContext context =
-                new SpringApplicationBuilder(MqttJavaApplication.class)
-                        .web(false)
-                        .run(null);
-        MyGateway gateway = context.getBean(MyGateway.class);
-        gateway.sendToMqtt(id.toString()+"#%" + title + "#%" + artist + "#%"+album+"#%"+year.toString());
+    MyGateway gateway;
+
+   public void sendMessage(String songData) {
+
+        gateway.sendToMqtt(songData);
 
     }
 
@@ -46,6 +43,14 @@ public class MqttJavaApplication {
         return messageHandler;
     }
 
+    public void build(){
+        ConfigurableApplicationContext context =
+                new SpringApplicationBuilder(MqttJavaApplication.class)
+                        .web(false)
+                        .run();
+        gateway = context.getBean(MyGateway.class);
+    }
+
     @Bean
     public MessageChannel mqttOutboundChannel() {
         return new DirectChannel();
@@ -57,5 +62,4 @@ public class MqttJavaApplication {
         void sendToMqtt(String data);
 
     }
-
 }
