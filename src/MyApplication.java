@@ -16,6 +16,7 @@ public class MyApplication extends Application{
         HashSet h = new HashSet<Class<?>>();
         h.add( HelloWorld.class );
         h.add( GetInfo.class);
+        h.add( PlaySong.class);
         return h;
     }
 }

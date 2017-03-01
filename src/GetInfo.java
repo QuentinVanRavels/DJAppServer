@@ -9,10 +9,10 @@ import javax.ws.rs.Produces;
 import java.sql.*;
 
 
-
 @Path("/info")
 public class GetInfo {
 
+    @Path("/songs")
     @GET
     @Produces("application/json")
     public String getSong() throws SQLException {
@@ -23,19 +23,20 @@ public class GetInfo {
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
-            String url = "jdbc:mysql://localhost:3306?useSSL=false";
+           // String url = "jdbc:mysql://localhost:3306?useSSL=false";
+            String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
             Connection conn = DriverManager.getConnection(url, "root", "root");
 
-            String query = "select title, artist from test.songs";
+            String query = "select id, artist, song from test.songs";
 
             stmt = conn.createStatement();
 
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                String title = rs.getString("title");
+                int id = rs.getInt("id");
                 String artist = rs.getString("artist");
-                System.out.println("title: " + title + ", artist: " + artist);
-                json = json + "{ \"title\":\"" + title + "\", \"artist\":\"" + artist + "\" }";
+                String song = rs.getString("song");
+                json = json + "{ \"id\":\"" + id + "\", \"artist\":\"" + artist + "\", \"song\":\"" + song + "\"}";
             }
 
             json = json + "]}";
