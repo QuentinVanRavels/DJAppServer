@@ -3,6 +3,8 @@
     <output-path>$PROJECT_DIR$/out/artifacts/DJAppServer_war</output-path>
     <root id="archive" name="DJAppServer_war.war">
       <element id="artifact" artifact-name="DJAppServer:war exploded" />
+      <element id="library" level="project" name="mysql-connector-java-5.1.41-bin" />
+      <element id="library" level="project" name="mongo-java-driver-3.0.41" />
     </root>
   </artifact>
 </component>

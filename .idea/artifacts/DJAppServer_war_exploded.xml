@@ -3,11 +3,9 @@
     <output-path>$PROJECT_DIR$/out/artifacts/DJAppServer_war_exploded</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="DJAppServer/web/Web" />
-      <element id="directory" name="WEB-INF">
-        <element id="directory" name="classes">
-          <element id="module-output" name="DJAppServer" />
-        </element>
-      </element>
+      <element id="directory" name="WEB-INF" />
+      <element id="library" level="project" name="mongo-java-driver-3.0.41" />
+      <element id="library" level="project" name="mysql-connector-java-5.1.41-bin" />
     </root>
   </artifact>
 </component>
