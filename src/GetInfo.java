@@ -31,7 +31,7 @@ public class GetInfo {
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
-           // String url = "jdbc:mysql://localhost:3306?useSSL=false";
+            // String url = "jdbc:mysql://localhost:3306?useSSL=false";
             String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
             Connection conn = DriverManager.getConnection(url, "Dries", "password");
 
@@ -57,12 +57,12 @@ public class GetInfo {
                 stmt.close();
             }
         }
-            if (!json.equals("[")) {
-                return json;
-            }
-            return "Error";
-            // String json = "{ \"Title\":\"Knights of Cydonia\", \"Artist\":\"Muse\"}";
-            // return json;
+        if (!json.equals("[")) {
+            return json;
+        }
+        return "Error";
+        // String json = "{ \"Title\":\"Knights of Cydonia\", \"Artist\":\"Muse\"}";
+        // return json;
     }
 
     @Path("/stats")
@@ -128,20 +128,20 @@ public class GetInfo {
 
             json = json + "\"mostactivevoter\": " + mrb_ID + "}";
 
-       } catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.print(e);
         } finally {
             if (stmt != null) {
                 stmt.close();
             }
         }
-            if(!json.equals("")){
-                return json;
-            }
+        if(!json.equals("")){
+            return json;
+        }
 
-            return "Error";
-            // String json = "{ \"Title\":\"Knights of Cydonia\", \"Artist\":\"Muse\"}";
-            // return json;
+        return "Error";
+        // String json = "{ \"Title\":\"Knights of Cydonia\", \"Artist\":\"Muse\"}";
+        // return json;
     }
 
 
@@ -246,9 +246,9 @@ public class GetInfo {
         }
 
         String json = "[{ \"frame\": 1, \"likes\": " + frame1likes + ", \"dislikes\": "+ frame1dislikes + "}," +
-                      "{ \"frame\": 2, \"likes\": " + frame2likes + ", \"dislikes\": "+ frame2dislikes + "}," +
-                      "{ \"frame\": 3, \"likes\": " + frame3likes + ", \"dislikes\": "+ frame3dislikes + "}," +
-                      "{ \"frame\": 4, \"likes\": " + frame4likes + ", \"dislikes\": "+ frame4dislikes + "}]";
+                "{ \"frame\": 2, \"likes\": " + frame2likes + ", \"dislikes\": "+ frame2dislikes + "}," +
+                "{ \"frame\": 3, \"likes\": " + frame3likes + ", \"dislikes\": "+ frame3dislikes + "}," +
+                "{ \"frame\": 4, \"likes\": " + frame4likes + ", \"dislikes\": "+ frame4dislikes + "}]";
 
         if(!json.equals(null)){
             return json;
@@ -273,7 +273,7 @@ public class GetInfo {
     @Produces("application/json")
     public String getYolo(){
 
-        return "[{ \"id\": 1, \"artist\": \"Red Hot Chilli Peppers\", \"song\": \"Californication\", \"year\": \"1999\"},{ \"id\": 2, \"artist\": \"Queen \", \"song\": \"Bohemian Rhapsody\", \"year\": \"1975\"},{ \"id\": 3, \"artist\": \"Nirvana\", \"song\": \"Smells like teen spirit\", \"year\": \"1991\"},{ \"id\": 4, \"artist\": \"Oasis\", \"song\": \"Wonderwall\", \"year\": \"1995\"},{ \"id\": 5, \"artist\": \"The Rolling Stones\", \"song\": \"You can't always get what you want\", \"year\": \"1969\"},{ \"id\": 6, \"artist\": \"Green Day\", \"song\": \"American Idiot\", \"year\": \"2004\"}]}";
+        return "[{ \"id\": 1, \"artist\": \"Red Hot Chilli Peppers\", \"song\": \"Californication\", \"year\": \"1999\"},{ \"id\": 2, \"artist\": \"Queen \", \"song\": \"Bohemian Rhapsody\", \"year\": \"1975\"},{ \"id\": 3, \"artist\": \"Nirvana\", \"song\": \"Smells like teen spirit\", \"year\": \"1991\"},{ \"id\": 4, \"artist\": \"Oasis\", \"song\": \"Wonderwall\", \"year\": \"1995\"},{ \"id\": 5, \"artist\": \"The Rolling Stones\", \"song\": \"You can't always get what you want\", \"year\": \"1969\"},{ \"id\": 6, \"artist\": \"Green Day\", \"song\": \"American Idiot\", \"year\": \"2004\"}]";
     }
 
 }
