@@ -16,7 +16,7 @@ public class PlaySong {
 
     @Path("{c}")
     @GET
-    public String getInput(@PathParam("c") int c) throws SQLException,IOException {
+    public String playSong(@PathParam("c") int c) throws SQLException,IOException {
         Statement stmt = null;
 
         try {
