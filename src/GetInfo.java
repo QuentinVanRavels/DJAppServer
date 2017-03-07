@@ -126,7 +126,7 @@ public class GetInfo {
                     id_track_high = id_track;
                 }
                 if(dislikes > dislikes_high){
-                    dislikes_high = likes;
+                    dislikes_high = dislikes;
                     id_track_low = id_track;
                 }
             }

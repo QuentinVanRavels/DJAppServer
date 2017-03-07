@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="java-json">
+    <CLASSES>
+      <root url="jar://C:/Program Files (x86)/Java/java-json.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Java/mongo-java-driver-3.0.4.jar!/" />
+      <root url="jar://C:/Program Files (x86)/Java/mysql-connector-java-5.1.41-bin.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://C:/Program Files (x86)/Java/java-json.jar!/" />
+    </SOURCES>
+  </library>
+</component>
