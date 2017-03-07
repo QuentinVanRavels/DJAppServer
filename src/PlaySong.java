@@ -5,6 +5,7 @@
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -16,7 +17,7 @@ public class PlaySong {
 
     @Path("{c}")
     @GET
-    public String getInput(@PathParam("c") int c) throws SQLException,IOException {
+    public Response getInput(@PathParam("c") int c) throws SQLException,IOException {
         Statement stmt = null;
 
         try {
@@ -34,7 +35,7 @@ public class PlaySong {
 
             Socket socket = new Socket("localhost",6789);
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            String songData = String.valueOf(c)+"#%"+rs.getString("title")+"#%"+rs.getString("artist")+"#%"+rs.getString("album")+"#%"+String.valueOf(rs.getInt("year"));
+            String songData = String.valueOf(c)+"#%"+rs.getString("song")+"#%"+rs.getString("artist")+"#%album"+"#%"+String.valueOf(rs.getInt("year"));
             socket.close();
             dataOutputStream.writeBytes(songData + '\n');
             //app.sendMessage(c,rs.getString("song"),rs.getString("artist"),rs.getString("album"),rs.getInt("year"));
@@ -50,6 +51,9 @@ public class PlaySong {
             }
         }
 
-        return "Have a nice day!";
+        String result = "{\"status\" : \"ok\"}";
+
+        return Response.status(200).entity(result).header("Access-Control-Allow-Origin", "*").build();
+
     }
 }

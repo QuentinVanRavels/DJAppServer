@@ -3,27 +3,37 @@
  */
 
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.mongodb.*;
+import com.mongodb.util.JSON;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.*;
 import java.net.UnknownHostException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
 
+
+
 @CrossOrigin
+@RestController
 @Path("/info")
 public class GetInfo {
 
     @Path("/songs")
     @GET
     @Produces("application/json")
-    public String getSong() throws SQLException, ClassNotFoundException {
+    public Response getSong() throws SQLException, ClassNotFoundException {
 
         Statement stmt = null;
         String json = "[";
@@ -39,16 +49,28 @@ public class GetInfo {
 
             stmt = conn.createStatement();
 
+            JSONArray dataArray = new JSONArray();
+
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String artist = rs.getString("artist");
                 String song = rs.getString("song");
                 int year = rs.getInt("year");
-                json = json + "{ \"id\": " + id + ", \"artist\": \"" + artist + "\", \"song\": \"" + song + "\", \"year\": \"" + year + "\"},";
+                JSONObject data = new JSONObject();
+                data.put("id", id);
+                data.put("artist", artist);
+                data.put("song", song);
+                data.put("year", year);
+                dataArray.put(data);
             }
 
-            json = json.substring(0,json.length()-1) + "]";
+            JSONObject mainObject = new JSONObject();
+            mainObject.put("songs", dataArray);
+
+            String result = mainObject.toString();
+
+            return Response.status(200).entity(result).header("Access-Control-Allow-Origin", "*").build();
 
         } catch (SQLException e) {
             System.out.print(e);
@@ -57,21 +79,16 @@ public class GetInfo {
                 stmt.close();
             }
         }
-        if (!json.equals("[")) {
-            return json;
-        }
-        return "Error";
-        // String json = "{ \"Title\":\"Knights of Cydonia\", \"Artist\":\"Muse\"}";
-        // return json;
+
+        return Response.status(500).build();
     }
 
     @Path("/stats")
     @GET
     @Produces("application/json")
-    public String getStats() throws SQLException, ClassNotFoundException {
+    public Response getStats() throws SQLException, ClassNotFoundException {
 
         Statement stmt = null;
-        String json = "";
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -114,7 +131,9 @@ public class GetInfo {
                 }
             }
 
-            json = json + "{\"mostpopularsong\": " + id_track_high + ", \"leastpopularsong\": " + id_track_low + ", ";
+            JSONObject data = new JSONObject();
+            data.put("mostpopular", id_track_high);
+            data.put("leastpopularsong", id_track_low);
 
             query = "SELECT id FROM sqldb.MRB ORDER BY votes DESC";
 
@@ -126,7 +145,11 @@ public class GetInfo {
 
             int mrb_ID = rs.getInt("id");
 
-            json = json + "\"mostactivevoter\": " + mrb_ID + "}";
+            data.put("mostactivevoter", mrb_ID);
+
+            String result = data.toString();
+
+            return Response.status(200).entity(result).header("Access-Control-Allow-Origin", "*").build();
 
         } catch (SQLException e) {
             System.out.print(e);
@@ -135,20 +158,15 @@ public class GetInfo {
                 stmt.close();
             }
         }
-        if(!json.equals("")){
-            return json;
-        }
 
-        return "Error";
-        // String json = "{ \"Title\":\"Knights of Cydonia\", \"Artist\":\"Muse\"}";
-        // return json;
+        return Response.status(500).build();
     }
 
 
     @Path("/stats/{c}")
     @GET
     @Produces("application/json")
-    public String getStatSong(@PathParam("c") int c) throws SQLException, UnknownHostException, ClassNotFoundException {
+    public Response getStatSong(@PathParam("c") int c) throws SQLException, UnknownHostException, ClassNotFoundException {
 
         //get start of song
         Statement stmt = null;
@@ -158,7 +176,7 @@ public class GetInfo {
         String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
         Connection conn = DriverManager.getConnection(url, "Dries", "password");
 
-        String query = "select time from sqldb.Play where id_track =" + c;
+        String query = "select time from sqldb.Play where id_track = " + c;
 
         stmt = conn.createStatement();
 
@@ -245,35 +263,70 @@ public class GetInfo {
             }
         }
 
-        String json = "[{ \"frame\": 1, \"likes\": " + frame1likes + ", \"dislikes\": "+ frame1dislikes + "}," +
-                "{ \"frame\": 2, \"likes\": " + frame2likes + ", \"dislikes\": "+ frame2dislikes + "}," +
-                "{ \"frame\": 3, \"likes\": " + frame3likes + ", \"dislikes\": "+ frame3dislikes + "}," +
-                "{ \"frame\": 4, \"likes\": " + frame4likes + ", \"dislikes\": "+ frame4dislikes + "}]";
+        JSONArray dataArray = new JSONArray();
 
-        if(!json.equals(null)){
-            return json;
-        }
+        JSONObject data1 = new JSONObject();
+        JSONObject data2 = new JSONObject();
+        JSONObject data3 = new JSONObject();
+        JSONObject data4 = new JSONObject();
 
-        return "Error or no data";
+        data1.put("frame", 1);
+        data1.put("likes", frame1likes);
+        data1.put("dislikes", frame1dislikes);
+
+        data2.put("frame", 2);
+        data2.put("likes", frame2likes);
+        data2.put("dislikes", frame2dislikes);
+
+        data3.put("frame", 3);
+        data3.put("likes", frame3likes);
+        data3.put("dislikes", frame3dislikes);
+
+        data4.put("frame", 4);
+        data4.put("likes", frame4likes);
+        data4.put("dislikes", frame4dislikes);
+
+        dataArray.put(data1);
+        dataArray.put(data2);
+        dataArray.put(data3);
+        dataArray.put(data4);
+
+        JSONObject mainObject = new JSONObject();
+        mainObject.put("timing", dataArray);
+
+        String result = mainObject.toString();
+
+        return Response.status(200).entity(result).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @Path("{c}")
     @GET
     @Produces("application/json")
-    public String getInput(@PathParam("c") String c){
-        String json = "{ \"Input\":\"" + c + "\"}";
+    public Response getInput(@PathParam("c") String c){
 
-        System.out.print(json);
+        JSONObject data = new JSONObject();
 
-        return json;
+        data.put("input", c);
+
+        String result = data.toString();
+
+        return Response.status(200).entity(result).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @Path("/yolo")
     @GET
     @Produces("application/json")
-    public String getYolo(){
+    public Response getYolo() throws JSONException {
 
-        return "[{ \"id\": 1, \"artist\": \"Red Hot Chilli Peppers\", \"song\": \"Californication\", \"year\": \"1999\"},{ \"id\": 2, \"artist\": \"Queen \", \"song\": \"Bohemian Rhapsody\", \"year\": \"1975\"},{ \"id\": 3, \"artist\": \"Nirvana\", \"song\": \"Smells like teen spirit\", \"year\": \"1991\"},{ \"id\": 4, \"artist\": \"Oasis\", \"song\": \"Wonderwall\", \"year\": \"1995\"},{ \"id\": 5, \"artist\": \"The Rolling Stones\", \"song\": \"You can't always get what you want\", \"year\": \"1969\"},{ \"id\": 6, \"artist\": \"Green Day\", \"song\": \"American Idiot\", \"year\": \"2004\"}]";
+        String data = "[{ \"id\": 1, \"artist\": \"Red Hot Chilli Peppers\", \"song\": \"Californication\", \"year\": \"1999\"},{ \"id\": 2, \"artist\": \"Queen \", \"song\": \"Bohemian Rhapsody\", \"year\": \"1975\"},{ \"id\": 3, \"artist\": \"Nirvana\", \"song\": \"Smells like teen spirit\", \"year\": \"1991\"},{ \"id\": 4, \"artist\": \"Oasis\", \"song\": \"Wonderwall\", \"year\": \"1995\"},{ \"id\": 5, \"artist\": \"The Rolling Stones\", \"song\": \"You can't always get what you want\", \"year\": \"1969\"},{ \"id\": 6, \"artist\": \"Green Day\", \"song\": \"American Idiot\", \"year\": \"2004\"}]";
+
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("songs", data);
+
+        String result = jsonObject.toString();
+
+        return Response.status(200).entity(result).header("Access-Control-Allow-Origin", "*").build();
     }
 
 }
