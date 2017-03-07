@@ -131,18 +131,28 @@ public class GetInfo {
                 }
             }
 
+
+            query = "select song from sqldb.Track where id = " + id_track_high;
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            rs.next();
+            String mostpopular = rs.getString("song");
+
+            query = "select song from sqldb.Track where id = " + id_track_low;
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            rs.next();
+            String leastpopular = rs.getString("song");
+
             JSONObject data = new JSONObject();
-            data.put("mostpopular", id_track_high);
-            data.put("leastpopularsong", id_track_low);
+            data.put("mostpopular", mostpopular);
+            data.put("leastpopularsong", leastpopular);
 
             query = "SELECT id FROM sqldb.MRB ORDER BY votes DESC";
 
             stmt = conn.createStatement();
-
             rs = stmt.executeQuery(query);
-
             rs.next();
-
             int mrb_ID = rs.getInt("id");
 
             data.put("mostactivevoter", mrb_ID);
@@ -184,7 +194,7 @@ public class GetInfo {
 
         rs.next();
 
-        Timestamp start = rs.getTimestamp("id_track");
+        Timestamp start = rs.getTimestamp("time");
 
         //nosql part
 
@@ -271,20 +281,20 @@ public class GetInfo {
         JSONObject data4 = new JSONObject();
 
         data1.put("frame", 1);
-        data1.put("likes", frame1likes);
-        data1.put("dislikes", frame1dislikes);
+        data1.put("upvotes", frame1likes);
+        data1.put("downvotes", frame1dislikes);
 
         data2.put("frame", 2);
-        data2.put("likes", frame2likes);
-        data2.put("dislikes", frame2dislikes);
+        data2.put("upvotes", frame2likes);
+        data2.put("downvotes", frame2dislikes);
 
         data3.put("frame", 3);
-        data3.put("likes", frame3likes);
-        data3.put("dislikes", frame3dislikes);
+        data3.put("upvotes", frame3likes);
+        data3.put("downvotes", frame3dislikes);
 
         data4.put("frame", 4);
-        data4.put("likes", frame4likes);
-        data4.put("dislikes", frame4dislikes);
+        data4.put("upvotes", frame4likes);
+        data4.put("downvotes", frame4dislikes);
 
         dataArray.put(data1);
         dataArray.put(data2);
