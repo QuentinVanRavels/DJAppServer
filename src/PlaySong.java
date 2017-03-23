@@ -27,7 +27,7 @@ public class PlaySong {
             String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
             Connection conn = DriverManager.getConnection(url, "Dries", "password");
 
-            String query = "select artist, song from sqldb.Track where id = " + c;
+            String query = "select artist, song, year from sqldb.Track where id = " + c;
 
             stmt = conn.createStatement();
 
@@ -36,8 +36,8 @@ public class PlaySong {
             Socket socket = new Socket("localhost",6789);
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             String songData = String.valueOf(c)+"#%"+rs.getString("song")+"#%"+rs.getString("artist")+"#%album"+"#%"+String.valueOf(rs.getInt("year"));
-            socket.close();
             dataOutputStream.writeBytes(songData + '\n');
+            socket.close();
             //app.sendMessage(c,rs.getString("song"),rs.getString("artist"),rs.getString("album"),rs.getInt("year"));
 
 

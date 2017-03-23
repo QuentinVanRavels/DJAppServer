@@ -1,6 +1,8 @@
 <component name="libraryTable">
   <library name="Maven: org.springframework.integration:spring-integration-bom:4.3.2.RELEASE">
-    <CLASSES />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/integration/spring-integration-bom/4.3.2.RELEASE/spring-integration-bom-4.3.2.RELEASE.jar!/" />
+    </CLASSES>
     <JAVADOC>
       <root url="jar://$MAVEN_REPOSITORY$/org/springframework/integration/spring-integration-bom/4.3.2.RELEASE/spring-integration-bom-4.3.2.RELEASE-javadoc.jar!/" />
     </JAVADOC>

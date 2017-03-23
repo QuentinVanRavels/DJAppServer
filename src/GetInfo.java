@@ -5,6 +5,7 @@
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.mongodb.*;
+import com.mongodb.connection.Connection;
 import com.mongodb.util.JSON;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.*;
 import java.net.UnknownHostException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 
@@ -43,7 +45,7 @@ public class GetInfo {
 
             // String url = "jdbc:mysql://localhost:3306?useSSL=false";
             String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
-            Connection conn = DriverManager.getConnection(url, "Dries", "password");
+            java.sql.Connection conn = DriverManager.getConnection(url, "Dries", "password");
 
             String query = "select id, artist, song, year from sqldb.Track";
 
@@ -95,7 +97,7 @@ public class GetInfo {
 
             // String url = "jdbc:mysql://localhost:3306?useSSL=false";
             String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
-            Connection conn = DriverManager.getConnection(url, "Dries", "password");
+            java.sql.Connection conn = DriverManager.getConnection(url, "Dries", "password");
 
             String query = "select id_track, likes, dislikes from sqldb.Play";
 
@@ -184,7 +186,7 @@ public class GetInfo {
         Class.forName("com.mysql.jdbc.Driver");
 
         String url = "jdbc:mysql://143.129.39.117:3306?useSSL=false";
-        Connection conn = DriverManager.getConnection(url, "Dries", "password");
+        java.sql.Connection conn = DriverManager.getConnection(url, "Dries", "password");
 
         String query = "select time from sqldb.Play where id_track = " + c;
 
@@ -198,14 +200,18 @@ public class GetInfo {
 
         //nosql part
 
-        MongoClient mongoClient = new MongoClient( "143.129.39.119" , 27017 );
+        MongoCredential credential = MongoCredential.createMongoCRCredential("siteUserAdmin", "admin","password".toCharArray());
+        MongoClient mongoClient = new MongoClient(new ServerAddress("143.129.39.119"), Arrays.asList(credential));
         @SuppressWarnings("deprecation")
-        DB db = mongoClient.getDB( "NoSqlDb" );
+        DB db = mongoClient.getDB("NoSqlDb");
+
         //boolean auth = db.authenticate(myUserName, myPassword);
         //System.out.println("Authentication: "+auth);
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("topic", "songVote");// TODO: 01-Mar-17 CreatedDate is searchQuery.put("")
-        searchQuery.put("song_ID",c);
+        String tempID = "000" + c;
+        System.out.println("Temp ID: " + tempID);
+        searchQuery.put("song_ID",tempID);
         DBCollection table = db.getCollection("MRB");
         DBCursor cursor = table.find(searchQuery);
 
@@ -213,11 +219,13 @@ public class GetInfo {
         ArrayList<Timestamp> dislikes = new ArrayList<Timestamp>();
 
         while (cursor.hasNext()) {
-            System.out.println(cursor.next());
-            int vote = Integer.parseInt(cursor.curr().get("vote").toString());
-            Timestamp time = (Timestamp) cursor.curr().get("createdDate");
+            DBObject object = cursor.next();
+            //System.out.println(cursor.next());
+            int vote = Integer.parseInt(object.get("vote").toString());
+            //Timestamp time = (Timestamp) cursor.curr().get("createdDate");
 
-
+            java.util.Date tempDate = (java.util.Date) object.get("createdDate");
+            Timestamp time = new Timestamp(tempDate.getTime());
             if(vote == 1){
                 likes.add(time);
             }else{
@@ -229,10 +237,10 @@ public class GetInfo {
         Collections.sort(dislikes);
 
         Timestamp frame1 = start;
-        Timestamp frame2 = start;
-        Timestamp frame3 = start;
-        Timestamp frame4 = start;
-        Timestamp frame5 = start;
+        Timestamp frame2 = new Timestamp(frame1.getTime() + 1*60*1000);
+        Timestamp frame3 = new Timestamp(frame1.getTime() + 2*60*1000);
+        Timestamp frame4 = new Timestamp(frame1.getTime() + 3*60*1000);
+        Timestamp frame5 = new Timestamp(frame1.getTime() + 4*60*1000);
 
         int frame1likes = 0;
         int frame2likes = 0;
@@ -243,11 +251,6 @@ public class GetInfo {
         int frame2dislikes = 0;
         int frame3dislikes = 0;
         int frame4dislikes = 0;
-
-        frame2.setTime(frame2.getTime() + 1*60*1000);
-        frame3.setTime(frame3.getTime() + 2*60*1000);
-        frame4.setTime(frame4.getTime() + 3*60*1000);
-        frame5.setTime(frame5.getTime() + 4*60*1000);
 
         for(int i = 0; i < likes.size(); i++){
             if(likes.get(i).after(frame1) && likes.get(i).before(frame2)){
